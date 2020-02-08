@@ -10,6 +10,6 @@ class World:
         return self.goals
 
 
-    def getActions(self):
+    def neighbor_states(self, state):
         return 1
 

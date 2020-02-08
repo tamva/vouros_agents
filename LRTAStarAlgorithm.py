@@ -44,7 +44,7 @@ def LTRAStarAlgorithm(world, start, end):
 
         # Generate children
         children = []
-        for new_position in world.getActions(): # get
+        for new_position in world.neighbor_states(current_node):  # get
 
             # Get node position
             node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
