@@ -4,7 +4,6 @@ from Node import Node
 def LTRAStarAlgorithm(world, start, end):
     """Returns a list of tuples as a path from the given start to the given end in the given maze"""
 
-
     # Create start and end node
     start_node = Node(None, start)
     start_node.g = start_node.h = start_node.f = 0
@@ -44,7 +43,7 @@ def LTRAStarAlgorithm(world, start, end):
 
         # Generate children
         children = []
-        for new_position in world.neighbor_states(current_node):  # get
+        for new_position in world.neighborStates(current_node):  # get
 
             # Get node position
             node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
