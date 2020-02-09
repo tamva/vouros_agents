@@ -99,9 +99,9 @@ def LTRAStarAlgorithm(world, start, end):
             tmpNode = current_node
 
             for move in moves:
-                # state = ( (Nick, home, delay), (Ann, home, delay), (Tasos, home, delay), (Mary, home, delay), (George, home, delay) )
+                # state = [ (Nick, home, delay), (Ann, home, delay), (Tasos, home, delay), (Mary, home, delay), (George, home, delay) ]
 
-                if movingToCafe(move) and not(world.availableSeatInCafe()):
+                if movingToCafe(move) and not(world.availableSeatsInCafe()):
                     break
                 if movingToCinema(move) and not (world.availableSeatInCinema()):
                     break
@@ -123,14 +123,18 @@ def LTRAStarAlgorithm(world, start, end):
                     continue
 
             # Create the f, g, and h values
-            child.g = current_node.g + child.getSumDelays()
-            # child.h = ((child.position[0] - end_node.position[0]) ** 2) + ((child.position[1] - end_node.position[1]) ** 2)
-            child.h = (-1) * heuristic[child.position[0], child.position[1]]
+            child.g = child.getSumDelays(child)
+
             child.f = child.g + child.h
 
             # Child is already in the open list
             for open_node in open_list:
                 if child == open_node and child.g > open_node.g:
+                    continue
+
+            for open_node in open_list:
+                open_sum = child.getSumDelays(open_node)
+                if g > open_sum:  # and
                     continue
 
             # Add the child to the open list
