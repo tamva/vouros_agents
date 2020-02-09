@@ -1,3 +1,4 @@
+
 class Node():
     """A node class for A* Pathfinding"""
 
@@ -16,3 +17,8 @@ class Node():
 
     def __eq__(self, other):
         return self.position == other.position
+
+    def getSumDelays(self):
+        pass
+
+

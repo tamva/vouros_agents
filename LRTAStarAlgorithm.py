@@ -1,8 +1,59 @@
 from Node import Node
 
 
+def movingToCafe(move):
+    pass
+
+def movingToCinema(move):
+    pass
+
+def isNick(move):
+    pass
+
+def isAnn(move):
+    pass
+
+def isTasos(move):
+    pass
+
+def isMary(move):
+    pass
+
+def isGeorge(move):
+    pass
+
+def appendMoveToNode(world, node, move, ):
+    if isNick(move):
+        if movingToCafe(move):
+            state = (('N', 1, world.transitionTimes()[0]), node[1], node[2], node[3], node[4])
+        else:
+            state = (node[0], node[1], node[2], node[3], node[4])
+    elif isAnn(move):
+        if movingToCafe(move):
+            state = (node[0], node[1], node[2], node[3], node[4])
+        else:
+            state = (node[0], node[1], node[2], node[3], node[4])
+    elif isTasos(move):
+        if movingToCafe(move):
+            state = (node[0], node[1], node[2], node[3], node[4])
+        else:
+            state = (node[0], node[1], node[2], node[3], node[4])
+    elif isMary(move):
+        if movingToCafe(move):
+            state = (node[0], node[1], node[2], node[3], node[4])
+        else:
+            state = (node[0], node[1], node[2], node[3], node[4])
+    elif isGeorge(move):
+        if movingToCafe(move):
+            state = (node[0], node[1], node[2], node[3], node[4])
+        else:
+            state = (node[0], node[1], node[2], node[3], node[4])
+    return state
+
 def LTRAStarAlgorithm(world, start, end):
     """Returns a list of tuples as a path from the given start to the given end in the given maze"""
+
+    time = 17
 
     # Create start and end node
     start_node = Node(None, start)
@@ -18,7 +69,7 @@ def LTRAStarAlgorithm(world, start, end):
     open_list.append(start_node)
 
     # Loop until you find the end
-    while len(open_list) > 0:
+    while time <= 24:
 
         # Get the current node (the one with the lowest f-score)
         current_node = open_list[0]
@@ -43,21 +94,22 @@ def LTRAStarAlgorithm(world, start, end):
 
         # Generate children
         children = []
-        for new_position in world.neighborStates(current_node):  # get
+        for moves in world.nextMoves(current_node):  # get
 
-            # Get node position
-            node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
+            tmpNode = current_node
 
-            # Make sure within range
-            if node_position[0] > (len(maze) - 1) or node_position[0] < 0 or node_position[1] > (len(maze[len(maze)-1]) -1) or node_position[1] < 0:
-                continue
+            for move in moves:
+                # state = ( (Nick, home, delay), (Ann, home, delay), (Tasos, home, delay), (Mary, home, delay), (George, home, delay) )
 
-            # Make sure walkable terrain
-            if maze[node_position[0]][node_position[1]] != 0:
-                continue
+                if movingToCafe(move) and not(world.availableSeatInCafe()):
+                    break
+                if movingToCinema(move) and not (world.availableSeatInCinema()):
+                    break
+
+                appendMoveToNode(world, tmpNode, move)
 
             # Create new node
-            new_node = Node(current_node, node_position)
+            new_node = Node(current_node, tmpNode)
 
             # Append
             children.append(new_node)
@@ -71,7 +123,7 @@ def LTRAStarAlgorithm(world, start, end):
                     continue
 
             # Create the f, g, and h values
-            child.g = current_node.g + 1
+            child.g = current_node.g + child.getSumDelays()
             # child.h = ((child.position[0] - end_node.position[0]) ** 2) + ((child.position[1] - end_node.position[1]) ** 2)
             child.h = (-1) * heuristic[child.position[0], child.position[1]]
             child.f = child.g + child.h
@@ -83,3 +135,5 @@ def LTRAStarAlgorithm(world, start, end):
 
             # Add the child to the open list
             open_list.append(child)
+
+        time += 0.5
