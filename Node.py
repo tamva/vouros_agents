@@ -8,7 +8,14 @@ class Node():
         # 0 <- home
         # 1 <- cafe
         # 2 <- cinema
-        # state = ( (Nick, home, delay), (Ann, home, delay), (Tasos, home, delay), (Mary, home, delay), (George, home, delay) )
+        # state = [
+        #           (Nick, home, delay, wait),
+        #           (Ann, home, delay, wait),
+        #           (Tasos, home, delay, wait),
+        #           (Mary, home, delay, wait),
+        #           (George, home, delay, wait)
+        #           ]
+
         self.state = state
 
         self.g = 0

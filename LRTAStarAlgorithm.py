@@ -50,16 +50,19 @@ def appendMoveToNode(world, node, move, ):
             state = (node[0], node[1], node[2], node[3], node[4])
     return state
 
-def LTRAStarAlgorithm(world, start, end):
-    """Returns a list of tuples as a path from the given start to the given end in the given maze"""
-
-    time = 17
+def LTRAStarAlgorithm(world):
 
     # Create start and end node
-    start_node = Node(None, start)
+    s = [
+         (world.isNick,     world.is_at_home, 0, 0),
+         (world.isAnn,      world.is_at_home, 0, 0),
+         (world.isTasos,    world.is_at_home, 0, 0),
+         (world.isMary,     world.is_at_home, 0, 0),
+         (world.isGeorge,   world.is_at_home, 0, 0)
+         ]
+
+    start_node = Node(None, s)
     start_node.g = start_node.h = start_node.f = 0
-    end_node = Node(None, end)
-    end_node.g = end_node.h = end_node.f = 0
 
     # Initialize both open and closed list
     open_list = []
@@ -69,7 +72,7 @@ def LTRAStarAlgorithm(world, start, end):
     open_list.append(start_node)
 
     # Loop until you find the end
-    while time <= 24:
+    while world.time <= 14:
 
         # Get the current node (the one with the lowest f-score)
         current_node = open_list[0]
@@ -84,7 +87,7 @@ def LTRAStarAlgorithm(world, start, end):
         closed_list.append(current_node)
 
         # Found the goal
-        if current_node == end_node:
+        if world.is_end_state(current_node.state):
             path = []
             current = current_node
             while current is not None:
@@ -94,22 +97,10 @@ def LTRAStarAlgorithm(world, start, end):
 
         # Generate children
         children = []
-        for moves in world.nextMoves(current_node):  # get
-
-            tmpNode = current_node
-
-            for move in moves:
-                # state = [ (Nick, home, delay), (Ann, home, delay), (Tasos, home, delay), (Mary, home, delay), (George, home, delay) ]
-
-                if movingToCafe(move) and not(world.availableSeatsInCafe()):
-                    break
-                if movingToCinema(move) and not (world.availableSeatInCinema()):
-                    break
-
-                appendMoveToNode(world, tmpNode, move)
+        for move in world.nextMoves(current_node.state):  # get
 
             # Create new node
-            new_node = Node(current_node, tmpNode)
+            new_node = Node(current_node, move)
 
             # Append
             children.append(new_node)
@@ -140,4 +131,4 @@ def LTRAStarAlgorithm(world, start, end):
             # Add the child to the open list
             open_list.append(child)
 
-        time += 0.5
+        world.change_turn()
